@@ -1,25 +1,45 @@
-import React, { useState, useContext } from 'react';
-import { FirebaseContext } from '../../store/FirebaseContext';
+import React, { useState, useContext } from "react";
+import { FirebaseContext } from "../../store/Context";
+import { useHistory } from "react-router-dom";
 import Logo from "../../olx-logo.png";
 import "./Signup.css";
 
 export default function Signup() {
+  const history = useHistory();
   const [userName, setUserName] = useState("");
   const [Email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [Password, setPassword] = useState("");
-  const {firebase} = useContext(FirebaseContext)
+  const { firebase } = useContext(FirebaseContext);
 
-  const handleSubmit = (e)=>{
-    e.preventDefault()
+  const handleSubmit = (e) => {
+    e.preventDefault();
     console.log(firebase);
-  }
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(Email, Password)
+      .then((result) => {
+        result.user.updateProfile({ displayName: userName }).then(() => {
+          firebase
+            .firestore()
+            .collection("user")
+            .add({
+              id: result.user.uid,
+              username: userName,
+              phone: phone,
+            })
+            .then(() => {
+              history.push("/login");
+            });
+        });
+      });
+  };
 
   return (
     <div>
       <div className="signupParentDiv">
         <img width="200px" height="200px" src={Logo}></img>
-        <form onSubmit={handleSubmit} >
+        <form onSubmit={handleSubmit}>
           <label htmlFor="fname">Username</label>
           <br />
           <input

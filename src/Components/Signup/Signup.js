@@ -22,7 +22,7 @@ export default function Signup() {
         result.user.updateProfile({ displayName: userName }).then(() => {
           firebase
             .firestore()
-            .collection("user")
+            .collection("users")
             .add({
               id: result.user.uid,
               username: userName,

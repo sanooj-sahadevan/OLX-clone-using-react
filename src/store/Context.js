@@ -1,13 +1,14 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 
-export const FirebaseContext = createContext(null);
+export const FirebaseContext = createContext(null); // Likely not used here
+export const AuthContext = createContext(null);
 
-// export const AuthContext = createContext(null);
+export default function Context({ children }) { // Corrected prop name
+  const [user, setUser] = useState(null);
 
-// export default function Context({ childern }) {
-//   const [user, SetState] = useState(null);
-
-//   return (
-//     <AuthContext.Provider value={{ user,SetState }}>{childern}</AuthContext.Provider>
-//   );
-// }
+  return (
+    <AuthContext.Provider value={{ user }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}

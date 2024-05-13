@@ -16,7 +16,7 @@ const history = useHistory()
       alert('loggedin')
       history.push('/')
     }).catch((error)=>{
-      alert(error.message+('oooooooooooooooooooooooooo'))
+      alert(error.message)
     })
   };
 
